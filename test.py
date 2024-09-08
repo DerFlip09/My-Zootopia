@@ -18,5 +18,4 @@ def get_animal_info(animal):
 
 data = load_data("animals_data.json")
 
-for animal in data:
-    get_animal_info(animal)
+print(type(data))
