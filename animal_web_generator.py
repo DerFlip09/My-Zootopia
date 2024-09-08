@@ -13,16 +13,22 @@ def get_animal_info(animal):
         "Location": animal.get("locations")[0],
         "Type": animal["characteristics"].get("type")
     }
-    formatted_info = "<br/>\n".join(f"{key}: {value}" for key, value in animal_info.items() if value)
-    return formatted_info
+    animal_info = dict([(key, value) for key, value in animal_info.items() if value])
+    return animal_info
 
 
 def get_all_animal_data_as_string(data):
     html_string = ''
     for animal in data:
+        information = get_animal_info(animal)
         html_string += '<li class="cards__item">'
-        html_string += f'{get_animal_info(animal)}<br/>\n'
-        html_string += '</li>\n'
+        html_string += f'<div class="card__title">{information["Name"]}</div>'
+        html_string += '<p class="card__text">'
+        for key, value in information.items():
+            if key == "Name":
+                pass
+            html_string += f'<strong>{key}:</strong> {value}<br/>\n'
+        html_string += '</p></li>'
     return html_string
 
 
