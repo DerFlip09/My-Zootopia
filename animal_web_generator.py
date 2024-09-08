@@ -17,14 +17,21 @@ def get_animal_info(animal):
     return formatted_info
 
 
-def print_animal_info(data):
+def get_all_animal_data_as_string(data):
+    html_string = ""
     for animal in data:
-        print(get_animal_info(animal) + "\n")
+        html_string += (f"{get_animal_info(animal)}\n\n")
+    return html_string
 
 
 def main():
     animal_data = load_data("animals_data.json")
-    print_animal_info(animal_data)
+    new_text = get_all_animal_data_as_string(animal_data)
+    with open("animals_template.html", "r") as file:
+        webpage = file.read()
+        updated_page = webpage.replace("__REPLACE_ANIMALS_INFO__", new_text)
+        with open("animals.html", "w") as file:
+            file.write(updated_page)
 
 
 if __name__ == "__main__":
