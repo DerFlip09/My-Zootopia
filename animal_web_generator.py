@@ -29,7 +29,9 @@ def get_animal_info(animal: dict) -> dict:
         "Name": animal.get("name"),
         "Diet": animal["characteristics"].get("diet"),
         "Location": animal.get("locations")[0],
-        "Type": animal["characteristics"].get("type")
+        "Type": animal["characteristics"].get("type"),
+        "Weight": animal["characteristics"].get("weight"),
+        "Lifespan": animal["characteristics"].get("lifespan")
     }
     animal_info = dict([(key, value) for key, value in animal_info.items() if value])
     return animal_info
