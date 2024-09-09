@@ -18,19 +18,20 @@ def write_file(filename: str, text=None):
     print("File successfully written")
 
 
-def get_skin_type(data):
+def get_skin_type_from_user(data):
     while True:
         skin_type = input("Choose a skin type or press Enter for nothing: ")
-        if skin_type not in get_skin_types(data):
+        if skin_type not in get_skin_types_from_data(data):
             print("Choose one of the available skin types")
         else:
             return skin_type
 
-def get_skin_types(data):
+
+def get_skin_types_from_data(data):
     skin_types = []
     for animal in data:
         skin_types.append(animal["characteristics"].get("skin_type"))
-    return "\n".join(set(skin_types))
+    return "\n".join(set(skin_types)) + "\nAll"
 
 
 def get_animal_info(animal: dict) -> dict:
@@ -84,9 +85,13 @@ def get_all_animal_data_as_string(data, skin_type) -> str:
     :returns: HTML string containing all animals' information.
     """
     html_string = ''
-    for animal in data:
-        if skin_type in animal["characteristics"].values():
+    if skin_type.lower() == "all":
+        for animal in data:
             html_string += serialize_animal(animal)
+    else:
+        for animal in data:
+            if skin_type in animal["characteristics"].values():
+                html_string += serialize_animal(animal)
     return html_string
 
 
@@ -95,8 +100,8 @@ def main():
     Loads animal data, generates the updated HTML, and writes it to a file.
     """
     animal_data = load_json_data("animals_data.json")
-    print(get_skin_types(animal_data))
-    skin_type = get_skin_type(animal_data)
+    print(get_skin_types_from_data(animal_data))
+    skin_type = get_skin_type_from_user(animal_data)
     new_text = get_all_animal_data_as_string(animal_data, skin_type)
     webpage = get_file_data("animals_template.html")
     updated_page = webpage.replace("__REPLACE_ANIMALS_INFO__", new_text)
