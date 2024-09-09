@@ -18,6 +18,21 @@ def write_file(filename: str, text=None):
     print("File successfully written")
 
 
+def get_skin_type(data):
+    while True:
+        skin_type = input("Choose a skin type or press Enter for nothing: ")
+        if skin_type not in get_skin_types(data):
+            print("Choose one of the available skin types")
+        else:
+            return skin_type
+
+def get_skin_types(data):
+    skin_types = []
+    for animal in data:
+        skin_types.append(animal["characteristics"].get("skin_type"))
+    return "\n".join(set(skin_types))
+
+
 def get_animal_info(animal: dict) -> dict:
     """
     Extracts relevant information about an animal.
@@ -31,7 +46,8 @@ def get_animal_info(animal: dict) -> dict:
         "Location": animal.get("locations")[0],
         "Type": animal["characteristics"].get("type"),
         "Weight": animal["characteristics"].get("weight"),
-        "Lifespan": animal["characteristics"].get("lifespan")
+        "Lifespan": animal["characteristics"].get("lifespan"),
+        "Skin Type": animal["characteristics"].get("skin_type")
     }
     animal_info = dict([(key, value) for key, value in animal_info.items() if value])
     return animal_info
@@ -59,16 +75,18 @@ def serialize_animal(animal: dict) -> str:
     return html_string
 
 
-def get_all_animal_data_as_string(data) -> str:
+def get_all_animal_data_as_string(data, skin_type) -> str:
     """
     Converts a list of animal data into an HTML string.
 
     :param data: List of animal data dictionaries.
+    :param skin_type: For filtering the Webpage
     :returns: HTML string containing all animals' information.
     """
     html_string = ''
     for animal in data:
-        html_string += serialize_animal(animal)
+        if skin_type in animal["characteristics"].values():
+            html_string += serialize_animal(animal)
     return html_string
 
 
@@ -77,7 +95,9 @@ def main():
     Loads animal data, generates the updated HTML, and writes it to a file.
     """
     animal_data = load_json_data("animals_data.json")
-    new_text = get_all_animal_data_as_string(animal_data)
+    print(get_skin_types(animal_data))
+    skin_type = get_skin_type(animal_data)
+    new_text = get_all_animal_data_as_string(animal_data, skin_type)
     webpage = get_file_data("animals_template.html")
     updated_page = webpage.replace("__REPLACE_ANIMALS_INFO__", new_text)
     write_file("animals.html", updated_page)
