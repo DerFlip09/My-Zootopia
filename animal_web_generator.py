@@ -49,11 +49,13 @@ def serialize_animal(animal: dict) -> str:
     html_string += '<li class="cards__item">'
     html_string += f'<div class="card__title">{information["Name"]}</div>'
     html_string += '<p class="card__text">'
+    html_string += '<ul class="animal__information">'
     for key, value in information.items():
         if key == "Name":
             pass
-        html_string += f'<strong>{key}:</strong> {value}<br/>\n'
-    html_string += '</p></li>'
+        else:
+            html_string += f'<li class="item">{key}: {value}</li>\n'
+    html_string += '</ul></p></li>'
     return html_string
 
 
