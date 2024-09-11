@@ -20,4 +20,4 @@ def get_data_from_api_by_name(name):
     if response.status_code == requests.codes.ok:
         return response.json()
     else:
-        print("Error:", response.status_code, response.text)
+        return f"Error: {response.status_code} {response.text}"

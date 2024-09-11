@@ -105,6 +105,8 @@ def main():
     if not animal_data:
         error_text = f'<h2>The animal <i>{name}</i> does not exist.</h2>'
         generate_webpage_from_template(error_text, "animals_template.html")
+    elif "Error" in animal_data:
+        print(animal_data)
     else:
         new_text = get_all_animal_data_as_string(animal_data)
         generate_webpage_from_template(new_text, "animals_template.html")
