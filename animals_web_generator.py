@@ -48,6 +48,11 @@ def get_skin_types_from_data(data):
     return "\n".join(set(skin_types)) + "\nAll"
 
 
+def get_animal_name_from_user():
+    name = input("Enter animal name: ").strip()
+    return name
+
+
 def get_animal_info(animal: dict) -> dict:
     """
     Extracts relevant information about an animal.
@@ -108,7 +113,8 @@ def main():
     """
     Loads animal data, generates the updated HTML, and writes it to a file.
     """
-    animal_data = get_data_from_api_by_name("fox")
+    name = get_animal_name_from_user()
+    animal_data = get_data_from_api_by_name(name)
     new_text = get_all_animal_data_as_string(animal_data)
     webpage = get_file_data("animals_template.html")
     updated_page = webpage.replace("__REPLACE_ANIMALS_INFO__", new_text)
