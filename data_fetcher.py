@@ -2,7 +2,7 @@ import json
 import requests
 
 
-API_KEY = "4EvovkZHfIDIkocKnLoO1Q==zLCf47tkEv0Ibdgb"
+
 API_URL = "https://api.api-ninjas.com/v1/animals"
 
 
