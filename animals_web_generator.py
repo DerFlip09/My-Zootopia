@@ -109,16 +109,24 @@ def get_all_animal_data_as_string(data) -> str:
     return html_string
 
 
+def generate_webpage_from_template(text, template_file):
+    webpage = get_file_data(template_file)
+    updated_page = webpage.replace("__REPLACE_ANIMALS_INFO__", text)
+    write_file("animals.html", updated_page)
+
+
 def main():
     """
     Loads animal data, generates the updated HTML, and writes it to a file.
     """
     name = get_animal_name_from_user()
     animal_data = get_data_from_api_by_name(name)
-    new_text = get_all_animal_data_as_string(animal_data)
-    webpage = get_file_data("animals_template.html")
-    updated_page = webpage.replace("__REPLACE_ANIMALS_INFO__", new_text)
-    write_file("animals.html", updated_page)
+    if not animal_data:
+        error_text = f'<h2>The animal <i>{name}</i> does not exist.</h2>'
+        generate_webpage_from_template(error_text, "animals_template.html")
+    else:
+        new_text = get_all_animal_data_as_string(animal_data)
+        generate_webpage_from_template(new_text, "animals_template.html")
 
 
 if __name__ == "__main__":
